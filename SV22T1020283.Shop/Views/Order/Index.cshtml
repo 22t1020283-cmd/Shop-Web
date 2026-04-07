@@ -1,0 +1,153 @@
+﻿@using SV22T1020283.Models.Sales
+@model SV22T1020283.Models.Common.PagedResult<SV22T1020283.Models.Sales.OrderViewInfo>
+@{
+    ViewData["Title"] = "Đơn hàng của tôi";
+    int? currentStatus = ViewBag.CurrentStatus;
+    Layout = "_Layout";
+}
+
+<div class="container py-5">
+    <div class="row g-4">
+        <div class="col-md-3">
+            <div class="profile-nav d-flex flex-column gap-2">
+                <h6 class="text-uppercase small fw-bold text-muted mb-3 px-2">Giao dịch</h6>
+                <a href="@Url.Action("Profile", "ShopAccount")" class="nav-item-min">
+                    <i class="bi bi-person me-2"></i> Thông tin cá nhân
+                </a>
+                <a href="@Url.Action("ChangePassword", "ShopAccount")" class="nav-item-min">
+                    <i class="bi bi-key me-2"></i> Đổi mật khẩu
+                </a>
+                <a href="@Url.Action("Index", "Order")" class="nav-item-min active">
+                    <i class="bi bi-receipt me-2"></i> Đơn hàng của tôi
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <div class="mb-4">
+                <h4 class="fw-800 tracking-tighter mb-4">LỊCH SỬ ĐƠN HÀNG</h4>
+                
+                <div class="status-filter-scroll">
+                    <div class="d-flex gap-2 pb-2">
+                        <a href="@Url.Action("Index", new { status = (int?)null })" class="filter-chip @(currentStatus == null ? "active" : "")">Tất cả</a>
+                        <a href="@Url.Action("Index", new { status = 1 })" class="filter-chip @(currentStatus == 1 ? "active" : "")">Chờ duyệt</a>
+                        <a href="@Url.Action("Index", new { status = 2 })" class="filter-chip @(currentStatus == 2 ? "active" : "")">Đã duyệt</a>
+                        <a href="@Url.Action("Index", new { status = 3 })" class="filter-chip @(currentStatus == 3 ? "active" : "")">Đang giao</a>
+                        <a href="@Url.Action("Index", new { status = 4 })" class="filter-chip @(currentStatus == 4 ? "active" : "")">Hoàn tất</a>
+                        <a href="@Url.Action("Index", new { status = -1 })" class="filter-chip @(currentStatus == -1 ? "active" : "")">Đã hủy</a>
+                    </div>
+                </div>
+            </div>
+
+            @if (Model.DataItems.Count == 0)
+            {
+                <div class="text-center py-5 bg-white rounded-4 shadow-sm">
+                    <i class="bi bi-inbox fs-1 text-muted opacity-25"></i>
+                    <p class="mt-3 text-muted">Bạn chưa có đơn hàng nào trong mục này.</p>
+                    <a href="/" class="btn-min-dark px-4 py-2 text-decoration-none d-inline-block mt-2">MUA SẮM NGAY</a>
+                </div>
+            }
+            else
+            {
+                <div class="order-list d-flex flex-column gap-3">
+                    @foreach (var order in Model.DataItems)
+                    {
+                        <div class="order-card p-4 bg-white shadow-sm rounded-4 border-0 transition">
+                            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="order-icon bg-light rounded-3 text-dark d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-box-seam fs-5"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0 fw-800">Đơn hàng #@order.OrderID</h6>
+                                        <small class="text-muted">Đặt lúc: @order.OrderTime.ToString("dd/MM/yyyy HH:mm")</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="text-md-end d-flex flex-column gap-1">
+                                    <span class="status-badge-min @order.Status.ToString().ToLower()">
+                                        @switch (order.Status)
+                                        {
+                                            case OrderStatusEnum.New: <span>Chờ duyệt</span> break;
+                                            case OrderStatusEnum.Accepted: <span>Đã duyệt</span> break;
+                                            case OrderStatusEnum.Shipping: <span>Đang giao</span> break;
+                                            case OrderStatusEnum.Completed: <span>Hoàn tất</span> break;
+                                            case OrderStatusEnum.Cancelled: <span>Đã hủy</span> break;
+                                            case OrderStatusEnum.Rejected: <span>Bị từ chối</span> break;
+                                        }
+                                    </span>
+                                    <span class="fw-800 text-dark">@order.TotalPrice.ToString("#,##0") đ</span>
+                                </div>
+                                
+                                <div class="w-100 border-top mt-2 pt-3 d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">Cập nhật cuối: @(order.AcceptTime?.ToString("dd/MM/yyyy") ?? "--")</small>
+                                    <a href="@Url.Action("Detail", new { id = order.OrderID })" class="btn-detail-link text-decoration-none fw-bold small">
+                                        XEM CHI TIẾT <i class="bi bi-chevron-right ms-1"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                @if (Model.PageCount > 1)
+                {
+                    <div class="d-flex justify-content-center mt-5">
+                        <nav>
+                            <ul class="pagination pagination-min gap-2">
+                                @for (int i = 1; i <= Model.PageCount; i++)
+                                {
+                                    <li class="@(i == Model.Page ? "active" : "")">
+                                        <a href="@Url.Action("Index", new { page = i, status = currentStatus })">@i</a>
+                                    </li>
+                                }
+                            </ul>
+                        </nav>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    .fw-800 { font-weight: 800; }
+    .tracking-tighter { letter-spacing: -1.5px; }
+
+    /* Sidebar Nav (Kế thừa từ các trang trước) */
+    .nav-item-min { padding: 10px 15px; border-radius: 8px; color: #555; text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: 0.2s; }
+    .nav-item-min:hover { background: #f4f4f4; color: #000; }
+    .nav-item-min.active { background: #000; color: #fff; }
+
+    /* Filter Chips */
+    .status-filter-scroll { overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
+    .status-filter-scroll::-webkit-scrollbar { display: none; }
+    .filter-chip { padding: 8px 18px; border-radius: 50px; background: #fff; border: 1px solid #eee; color: #666; text-decoration: none; font-size: 0.85rem; font-weight: 600; transition: 0.3s; }
+    .filter-chip:hover { border-color: #000; color: #000; }
+    .filter-chip.active { background: #000; border-color: #000; color: #fff; }
+
+    /* Order Card */
+    .order-card { border: 1px solid transparent; transition: 0.3s; }
+    .order-card:hover { transform: translateY(-3px); border-color: #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.05) !important; }
+    .order-icon { width: 45px; height: 45px; }
+
+    /* Status Badges Minimal */
+    .status-badge-min { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+    .status-badge-min.new { color: #f39c12; }
+    .status-badge-min.accepted { color: #3498db; }
+    .status-badge-min.shipping { color: #2ecc71; }
+    .status-badge-min.completed { color: #27ae60; }
+    .status-badge-min.cancelled, .status-badge-min.rejected { color: #e74c3c; }
+
+    /* Link & Button */
+    .btn-detail-link { color: #000; font-size: 0.75rem; letter-spacing: 1px; }
+    .btn-detail-link:hover { color: #d4af37; }
+    .btn-min-dark { background: #1a1a1a; color: #fff; border-radius: 8px; font-weight: 700; font-size: 0.8rem; transition: 0.3s; border: none; }
+    .btn-min-dark:hover { background: #d4af37; }
+
+    /* Pagination Minimal */
+    .pagination-min { list-style: none; display: flex; padding: 0; }
+    .pagination-min li a { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; color: #666; text-decoration: none; border: 1px solid #eee; transition: 0.3s; }
+    .pagination-min li.active a { background: #000; color: #fff; border-color: #000; }
+    .pagination-min li a:hover:not(.active) { background: #f8f9fa; border-color: #ccc; }
+</style>

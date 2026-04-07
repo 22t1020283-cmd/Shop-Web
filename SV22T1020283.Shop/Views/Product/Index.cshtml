@@ -1,0 +1,279 @@
+﻿@model SV22T1020283.Models.Shop.ProductSearchViewModel
+@{
+    ViewData["Title"] = " Sản Phẩm";
+}
+
+<div class="product-page-wrapper py-4">
+    <div class="row g-4">
+        <aside class="col-lg-3 col-md-4">
+            <div class="sticky-filter">
+                <div class="filter-card border-0 bg-white shadow-luxury rounded-4 p-4">
+                    <div class="d-flex align-items-center mb-4 pb-2 border-bottom">
+                        <i class="bi bi-sliders2 text-gold fs-4 me-2"></i>
+                        <h5 class="fw-800 mb-0 tracking-tighter uppercase">Bộ Lọc Tinh Tuyển</h5>
+                    </div>
+                    
+                    <form method="get" asp-action="Index" id="filterForm">
+                        <div class="mb-4">
+                            <label class="small text-uppercase fw-bold text-muted tracking-widest mb-2">Tìm kiếm</label>
+                            <div class="input-luxury-group">
+                                <input type="text" name="searchValue" class="form-control-luxury" 
+                                       value="@Model.SearchInput.SearchValue" placeholder="Nhập tên sản phẩm..." />
+                                <i class="bi bi-search icon-inner"></i>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="small text-uppercase fw-bold text-muted tracking-widest mb-2">Danh mục</label>
+                            <select name="categoryId" class="form-select-luxury" onchange="this.form.submit()">
+                                <option value="0">Tất cả danh mục</option>
+                                @foreach (var cat in Model.Categories)
+                                {
+                                    <option value="@cat.CategoryID" selected="@(Model.SearchInput.CategoryID == cat.CategoryID)">
+                                        @cat.CategoryName
+                                    </option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="small text-uppercase fw-bold text-muted tracking-widest mb-2">Khoảng giá (VNĐ)</label>
+                            <div class="row g-2 align-items-center">
+                                <div class="col-5">
+                                    <input type="number" name="minPrice" class="form-control-luxury text-center p-2" 
+                                           placeholder="Từ" value="@Model.SearchInput.MinPrice" />
+                                </div>
+                                <div class="col-2 text-center text-muted">—</div>
+                                <div class="col-5">
+                                    <input type="number" name="maxPrice" class="form-control-luxury text-center p-2" 
+                                           placeholder="Đến" value="@Model.SearchInput.MaxPrice" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-luxury-dark w-100 py-3 mt-2 rounded-3 fw-bold text-uppercase tracking-widest">
+                            Áp dụng bộ lọc
+                        </button>
+                        
+                        @if (Model.SearchInput.CategoryID > 0 || !string.IsNullOrEmpty(Model.SearchInput.SearchValue))
+                        {
+                            <a href="~/Product" class="btn btn-link w-100 mt-2 text-muted text-decoration-none small">
+                                <i class="bi bi-x-circle"></i> Xóa tất cả bộ lọc
+                            </a>
+                        }
+                    </form>
+                </div>
+            </div>
+        </aside>
+
+        <main class="col-lg-9 col-md-8">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-5">
+                <div class="mb-3 mb-md-0">
+                    <h2 class="fw-800 tracking-tighter mb-1">BỘ SƯU TẬP</h2>
+                    <p class="text-muted small mb-0">Hiển thị @Model.SearchResult.RowCount tuyệt tác công nghệ</p>
+                </div>
+                
+                <div class="sort-wrapper">
+                    <select class="form-select-luxury border-0 bg-transparent fw-bold" style="width: auto;">
+                        <option>Mới nhất</option>
+                        <option>Giá: Thấp đến Cao</option>
+                        <option>Giá: Cao đến Thấp</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                @foreach (var product in Model.SearchResult.DataItems)
+                {
+                    <div class="col-xl-4 col-lg-6 col-md-12 mb-2">
+                        <div class="product-card-luxury h-100">
+                            <div class="product-media">
+                                <img src="~/images/products/@(string.IsNullOrEmpty(product.Photo) ? "nophoto.png" : product.Photo)" 
+                                     class="product-img" alt="@product.ProductName">
+                                
+                                <div class="product-overlay-actions">
+                                    <button class="btn-action-luxury add-to-cart" data-product-id="@product.ProductID">
+                                        <i class="bi bi-bag-plus"></i>
+                                    </button>
+                                    <a href="@Url.Action("Detail", new { id = product.ProductID })" class="btn-action-luxury">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <div class="product-body-luxury py-4 px-2 text-center">
+                                <h6 class="product-name-luxury text-uppercase mb-2">@product.ProductName</h6>
+                                <div class="product-price-luxury">
+                                    @product.Price.ToString("#,##0") <span class="currency">VNĐ</span>
+                                </div>
+                            </div>
+                            <a href="@Url.Action("Detail", new { id = product.ProductID })" class="stretched-link"></a>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            @if (Model.SearchResult.DataItems.Count == 0)
+            {
+                <div class="empty-state text-center py-5">
+                    <i class="bi bi-search text-muted display-1 opacity-25"></i>
+                    <h4 class="mt-4 fw-bold">Rất tiếc, không tìm thấy kết quả</h4>
+                    <p class="text-muted">Vui lòng thử lại với bộ lọc khác.</p>
+                </div>
+            }
+
+            @if (Model.SearchResult.PageCount > 1)
+            {
+                <nav class="mt-5 pt-4">
+                    <ul class="pagination-luxury d-flex justify-content-center list-unstyled gap-2">
+                        @for (int i = 1; i <= Model.SearchResult.PageCount; i++)
+                        {
+                            <li class="@(i == Model.SearchResult.Page ? "active" : "")">
+                                <a href="@Url.Action("Index", new { 
+                                    page = i, 
+                                    categoryId = Model.SearchInput.CategoryID,
+                                    minPrice = Model.SearchInput.MinPrice,
+                                    maxPrice = Model.SearchInput.MaxPrice,
+                                    searchValue = Model.SearchInput.SearchValue
+                                })" class="page-link-luxury">@i</a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            }
+        </main>
+    </div>
+</div>
+
+<style>
+    /* CSS Tối ưu cho Luxury Product Page */
+    .fw-800 { font-weight: 800; }
+    .text-gold { color: #d4af37; }
+    .tracking-tighter { letter-spacing: -1px; }
+    .tracking-widest { letter-spacing: 0.15em; }
+
+    /* Filter Card */
+    .filter-card {
+        border: 1px solid rgba(0,0,0,0.05);
+        transition: 0.3s;
+    }
+    .shadow-luxury { box-shadow: 0 15px 40px rgba(0,0,0,0.05); }
+
+    /* Form Controls Luxury */
+    .form-control-luxury, .form-select-luxury {
+        border: 1px solid #eee;
+        padding: 12px 15px;
+        font-size: 0.9rem;
+        border-radius: 8px;
+        width: 100%;
+        transition: 0.3s;
+    }
+    .form-control-luxury:focus, .form-select-luxury:focus {
+        border-color: #d4af37;
+        box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        outline: none;
+    }
+
+    .input-luxury-group { position: relative; }
+    .icon-inner {
+        position: absolute; right: 15px; top: 50%;
+        transform: translateY(-50%); color: #ccc;
+    }
+
+    /* Product Card */
+    .product-card-luxury {
+        background: white;
+        transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        position: relative;
+    }
+    .product-media {
+        position: relative;
+        overflow: hidden;
+        background: #fdfdfd;
+        border-radius: 4px;
+    }
+    .product-img {
+        width: 100%;
+        height: 320px;
+        object-fit: contain;
+        transition: 0.8s ease;
+        mix-blend-mode: multiply;
+    }
+    .product-card-luxury:hover .product-img { transform: scale(1.1); }
+
+    /* Actions on Hover */
+    .product-overlay-actions {
+        position: absolute;
+        bottom: -50px; left: 0; width: 100%;
+        display: flex; justify-content: center; gap: 10px;
+        padding-bottom: 20px;
+        transition: 0.4s ease;
+        z-index: 5;
+        opacity: 0;
+    }
+    .product-card-luxury:hover .product-overlay-actions { bottom: 0; opacity: 1; }
+
+    .btn-action-luxury {
+        width: 45px; height: 45px; border-radius: 50%;
+        background: white; border: none; color: #1a1a1a;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        display: flex; align-items: center; justify-content: center;
+        transition: 0.3s;
+    }
+    .btn-action-luxury:hover { background: #d4af37; color: white; transform: translateY(-5px); }
+
+    /* Typography */
+    .product-name-luxury { font-size: 0.85rem; font-weight: 700; color: #1a1a1a; letter-spacing: 1px; }
+    .product-price-luxury { font-weight: 800; color: #d4af37; font-size: 1.1rem; }
+    .currency { font-size: 0.7rem; vertical-align: middle; }
+
+    /* Pagination */
+    .page-link-luxury {
+        width: 40px; height: 40px;
+        display: flex; align-items: center; justify-content: center;
+        border-radius: 50%; border: 1px solid #eee;
+        color: #1a1a1a; text-decoration: none; transition: 0.3s;
+    }
+    .pagination-luxury li.active .page-link-luxury {
+        background: #d4af37; color: white; border-color: #d4af37;
+    }
+    .page-link-luxury:hover:not(.active) { background: #f8f8f8; border-color: #d4af37; }
+
+    .sticky-filter { position: sticky; top: 100px; }
+    .btn-luxury-dark { background: #1a1a1a; color: white; border: none; transition: 0.3s; }
+    .btn-luxury-dark:hover { background: #d4af37; transform: translateY(-2px); }
+</style>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('.add-to-cart').click(function(e) {
+                e.preventDefault(); e.stopPropagation();
+                var productId = $(this).data('product-id');
+                var $btn = $(this);
+                
+                $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span>');
+
+                $.post('@Url.Action("AddToCart", "Cart")', { productId: productId, quantity: 1 })
+                    .done(function(response) {
+                        if (response.success) {
+                            if(typeof updateCartCount === 'function') updateCartCount();
+                            
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Tuyệt tác đã được chọn',
+                                text: 'Sản phẩm đã nằm trong túi hàng của bạn.',
+                                showConfirmButton: false,
+                                timer: 1500,
+                                toast: true,
+                                position: 'top-end'
+                            });
+                        }
+                    })
+                    .always(function() {
+                        $btn.prop('disabled', false).html('<i class="bi bi-bag-plus"></i>');
+                    });
+            });
+        });
+    </script>
+}

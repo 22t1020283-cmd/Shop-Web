@@ -1,0 +1,142 @@
+﻿@using SV22T1020283.Admin
+@model SV22T1020283.Models.Shop.RegisterViewModel
+@{
+    ViewData["Title"] = "Gia nhập HIHIHAHA";
+    Layout = "_Layout"; // Giữ Layout để có Header/Footer vì trang này dài
+}
+
+<div class="register-page-wrapper py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-9 col-xl-8">
+                <div class="card shadow-luxury border-0 rounded-5 overflow-hidden bg-white">
+                    <div class="row g-0">
+                        <div class="col-md-4 bg-dark d-none d-md-flex align-items-center justify-content-center p-5 text-center">
+                            <div class="register-welcome">
+                                <div class="logo-box-gold mb-4 mx-auto">
+                                    <i class="bi bi-gem text-white fs-2"></i>
+                                </div>
+                                <h3 class="text-white fw-800 tracking-tighter mb-3">GIA NHẬP</h3>
+                           
+                                <div class="divider-gold my-4 mx-auto"></div>
+                                <p class="text-light small opacity-75">Trở thành thành viên để nhận những ưu đãi đặc quyền và trải nghiệm mua sắm cá nhân hóa.</p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-8 p-4 p-lg-5">
+                            <h4 class="fw-800 tracking-tighter text-uppercase mb-4">Tạo tài khoản mới</h4>
+                            
+                            <form method="post" asp-action="Register">
+                                <div asp-validation-summary="ModelOnly" class="alert alert-danger border-0 rounded-4 small py-2"></div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="CustomerName" class="form-label-luxury">Họ tên <span class="text-danger">*</span></label>
+                                        <input asp-for="CustomerName" class="form-control-luxury" placeholder="Nguyễn Văn A" />
+                                        <span asp-validation-for="CustomerName" class="text-danger small"></span>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="Email" class="form-label-luxury">Email <span class="text-danger">*</span></label>
+                                        <input asp-for="Email" class="form-control-luxury" type="email" placeholder="name@company.com" />
+                                        <span asp-validation-for="Email" class="text-danger small"></span>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="Password" class="form-label-luxury">Mật khẩu <span class="text-danger">*</span></label>
+                                        <input asp-for="Password" class="form-control-luxury" type="password" placeholder="••••••••" />
+                                        <span asp-validation-for="Password" class="text-danger small"></span>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="ConfirmPassword" class="form-label-luxury">Xác nhận <span class="text-danger">*</span></label>
+                                        <input asp-for="ConfirmPassword" class="form-control-luxury" type="password" placeholder="••••••••" />
+                                        <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                                    </div>
+
+                                    <hr class="my-4 opacity-10">
+
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="Phone" class="form-label-luxury">Số điện thoại</label>
+                                        <input asp-for="Phone" class="form-control-luxury" placeholder="090x xxx xxx" />
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="Province" class="form-label-luxury">Tỉnh/Thành phố</label>
+                                        <select asp-for="Province" class="form-select-luxury" asp-items="await SelectListHelper.Provinces()">
+                                            <option value="">-- Chọn khu vực --</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-12 mb-4">
+                                        <label asp-for="Address" class="form-label-luxury">Địa chỉ chi tiết</label>
+                                        <textarea asp-for="Address" class="form-control-luxury" rows="2" placeholder="Số nhà, tên đường..."></textarea>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn-luxury-dark w-100 py-3 rounded-4 fw-bold tracking-widest">
+                                    HOÀN TẤT ĐĂNG KÝ <i class="bi bi-check2-circle ms-2"></i>
+                                </button>
+                            </form>
+
+                            <div class="text-center mt-4">
+                                <p class="small text-muted">Bạn đã có tài khoản? 
+                                    <a asp-action="Login" class="text-gold fw-bold text-decoration-none">Đăng nhập ngay</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    :root {
+        --luxury-gold: #d4af37;
+        --luxury-black: #1a1a1a;
+    }
+
+    .fw-800 { font-weight: 800; }
+    .text-gold { color: var(--luxury-gold); }
+    .tracking-widest { letter-spacing: 0.1em; }
+    .tracking-tighter { letter-spacing: -1.5px; }
+    .shadow-luxury { box-shadow: 0 30px 60px rgba(0,0,0,0.1); }
+    .uppercase { text-transform: uppercase; }
+
+    /* Cột trang trí bên trái */
+    .logo-box-gold {
+        width: 60px; height: 60px; border-radius: 18px;
+        border: 2px solid var(--luxury-gold);
+        display: flex; align-items: center; justify-content: center;
+    }
+    .divider-gold { width: 40px; height: 2px; background: var(--luxury-gold); }
+
+    /* Custom Inputs */
+    .form-label-luxury {
+        font-size: 0.7rem; font-weight: 800; color: #888;
+        text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;
+    }
+    .form-control-luxury, .form-select-luxury {
+        border-radius: 10px; border: 1px solid #eee; background: #fcfcfc;
+        padding: 10px 15px; font-size: 0.95rem; transition: 0.3s;
+    }
+    .form-control-luxury:focus, .form-select-luxury:focus {
+        border-color: var(--luxury-gold); background: #fff;
+        box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.05); outline: none;
+    }
+
+    /* Button */
+    .btn-luxury-dark {
+        background: var(--luxury-black); color: white; border: none; transition: 0.4s;
+    }
+    .btn-luxury-dark:hover {
+        background: var(--luxury-gold); transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2);
+    }
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

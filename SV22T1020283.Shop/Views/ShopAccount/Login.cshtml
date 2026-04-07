@@ -1,0 +1,210 @@
+﻿@{
+    ViewData["Title"] = "Đăng nhập";
+    Layout = "_LayoutEmpty";
+}
+
+<div class="auth-wrapper d-flex align-items-center justify-content-center min-vh-100">
+    <div class="auth-box col-11 col-sm-8 col-md-6 col-lg-4">
+
+        <!-- LOGO -->
+        <div class="text-center mb-4">
+            <h1 class="brand-title mb-1">HIHIHAHA SHOP</h1>
+            <p class="brand-sub">Official Store</p>
+        </div>
+
+        <!-- CARD -->
+        <div class="card auth-card">
+            <div class="card-body p-4 p-md-5">
+
+                <div class="text-center mb-4">
+                    <h5 class="auth-title">Đăng nhập</h5>
+                    <div class="divider"></div>
+                </div>
+
+                @if (!string.IsNullOrEmpty(ViewBag.Error))
+                {
+                    <div class="alert alert-danger small mb-4">
+                        <i class="bi bi-exclamation-circle me-1"></i> @ViewBag.Error
+                    </div>
+                }
+
+                <form method="post" asp-action="Login">
+                    <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+
+                    <!-- EMAIL -->
+                    <div class="mb-3">
+                        <label class="form-label-custom">Email</label>
+                        <input type="email" name="email"
+                               class="form-control-custom"
+                               value="@ViewBag.Email"
+                               placeholder="email@example.com"
+                               required autofocus />
+                    </div>
+
+                    <!-- PASSWORD -->
+                    <div class="mb-4">
+                        <label class="form-label-custom">Mật khẩu</label>
+                        <input type="password" name="password"
+                               class="form-control-custom"
+                               placeholder="••••••••"
+                               required />
+
+                        <!-- QUÊN MẬT KHẨU -->
+                        <div class="text-end mt-1">
+                            <a href="#" class="link-forgot">Quên mật khẩu?</a>
+                        </div>
+                    </div>
+
+                    <!-- BUTTON -->
+                    <button type="submit" class="btn-login w-100 mb-3">
+                        ĐĂNG NHẬP
+                    </button>
+
+                    <!-- REGISTER -->
+                    <div class="text-center">
+                        <span class="text-muted small">Chưa có tài khoản?</span>
+                        <a asp-action="Register" class="link-register">Đăng ký</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- BACK -->
+        <div class="text-center mt-4">
+            <a href="/" class="back-home">
+                <i class="bi bi-arrow-left me-1"></i> Trang chủ
+            </a>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    :root {
+        --gold: #d4af37;
+        --black: #111;
+        --bg: linear-gradient(135deg, #f8f8f8, #ffffff);
+    }
+
+    body {
+        background: var(--bg);
+    }
+
+    /* BRAND */
+    .brand-title {
+        font-weight: 900;
+        font-size: 2rem;
+        letter-spacing: -1px;
+        color: var(--black);
+        text-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .brand-sub {
+        font-size: 0.7rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--gold);
+        font-weight: 700;
+    }
+
+    /* CARD */
+    .auth-card {
+        border: none;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        background: #fff;
+    }
+
+    .auth-title {
+        font-weight: 800;
+        letter-spacing: 1px;
+    }
+
+    .divider {
+        width: 40px;
+        height: 2px;
+        background: var(--gold);
+        margin: 8px auto 0;
+    }
+
+    /* INPUT */
+    .form-label-custom {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #888;
+        margin-bottom: 6px;
+    }
+
+    .form-control-custom {
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 10px;
+        border: 1px solid #eee;
+        font-size: 0.9rem;
+        transition: all 0.25s ease;
+    }
+
+    .form-control-custom:focus {
+        border-color: var(--gold);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        outline: none;
+    }
+
+    /* BUTTON */
+    .btn-login {
+        background: var(--black);
+        color: #fff;
+        padding: 12px;
+        border-radius: 10px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        border: none;
+        transition: 0.3s;
+    }
+
+    .btn-login:hover {
+        background: var(--gold);
+        transform: translateY(-2px);
+    }
+
+    /* LINKS */
+    .link-forgot {
+        font-size: 0.75rem;
+        color: var(--gold);
+        text-decoration: none;
+    }
+
+    .link-forgot:hover {
+        text-decoration: underline;
+    }
+
+    .link-register {
+        margin-left: 5px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-decoration: none;
+        color: var(--black);
+    }
+
+    .back-home {
+        font-size: 0.8rem;
+        color: #aaa;
+        text-decoration: none;
+    }
+
+    /* ANIMATION */
+    .auth-box {
+        animation: fadeIn 0.6s ease;
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>

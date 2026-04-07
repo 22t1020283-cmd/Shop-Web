@@ -1,0 +1,180 @@
+﻿@model List<SV22T1020283.Models.Shop.CartItem>
+@{
+    ViewData["Title"] = "Túi Hàng Của Tôi";
+    decimal total = Model?.Sum(x => x.TotalPrice) ?? 0;
+}
+
+<div class="cart-page-wrapper py-5">
+    <div class="container">
+        <div class="d-flex align-items-center mb-5 pb-2 border-bottom">
+            <i class="bi bi-bag-check text-gold fs-2 me-3"></i>
+            <h2 class="fw-800 tracking-tighter mb-0 uppercase">Túi Hàng Của Bạn</h2>
+            <span class="ms-3 text-muted">(@(Model?.Count ?? 0) sản phẩm)</span>
+        </div>
+
+        @if (Model == null || Model.Count == 0)
+        {
+            <div class="empty-cart-state text-center py-5 shadow-luxury rounded-4 bg-white">
+                <div class="mb-4">
+                    <i class="bi bi-cart-x display-1 text-muted opacity-25"></i>
+                </div>
+                <h4 class="fw-bold">Túi hàng đang trống</h4>
+                <p class="text-muted mb-4">Có vẻ như bạn chưa chọn được tuyệt tác nào cho mình.</p>
+                <a href="@Url.Action("Index", "Product")" class="btn-luxury-dark px-5 py-3 rounded-3 text-decoration-none">
+                    KHÁM PHÁ CỬA HÀNG
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="cart-items-list">
+                        @foreach (var item in Model)
+                        {
+                            <div class="cart-item-card shadow-luxury rounded-4 bg-white p-4 mb-3 position-relative">
+                                <div class="row align-items-center">
+                                    <div class="col-3 col-md-2">
+                                        <div class="cart-img-wrapper rounded-3 overflow-hidden">
+                                            <img src="~/images/products/@(string.IsNullOrEmpty(item.Photo) ? "nophoto.png" : item.Photo)" 
+                                                 class="img-fluid" alt="@item.ProductName">
+                                        </div>
+                                    </div>
+                                    <div class="col-9 col-md-5">
+                                        <h6 class="fw-bold mb-1">@item.ProductName</h6>
+                                        <p class="small text-muted mb-0">Đơn vị: @item.Unit</p>
+                                        <div class="mt-2 d-md-none">
+                                            <span class="fw-bold text-gold">@item.SalePrice.ToString("#,##0") đ</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-3 mt-3 mt-md-0">
+                                        <div class="qty-selector-sm">
+                                            <form asp-action="UpdateCart" method="post" class="d-flex align-items-center">
+                                                <input type="hidden" name="productId" value="@item.ProductID" />
+                                                <button type="button" class="btn-qty" onclick="updateQty(this, -1)">-</button>
+                                                <input type="number" name="quantity" value="@item.Quantity" min="1" 
+                                                       class="input-qty" readonly onchange="this.form.submit()">
+                                                <button type="button" class="btn-qty" onclick="updateQty(this, 1)">+</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-2 text-end mt-3 mt-md-0">
+                                        <div class="fw-800 text-dark">@item.TotalPrice.ToString("#,##0") <span class="small">đ</span></div>
+                                    </div>
+                                </div>
+                                
+                                <form asp-action="RemoveFromCart" method="post" class="position-absolute top-0 end-0 p-3">
+                                    <input type="hidden" name="productId" value="@item.ProductID" />
+                                    <button type="submit" class="btn-remove" onclick="return confirm('Xóa sản phẩm này?')">
+                                        <i class="bi bi-x-lg"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="mt-4 d-flex justify-content-between">
+                        <a href="@Url.Action("Index", "Product")" class="text-decoration-none text-dark fw-bold small tracking-widest">
+                            <i class="bi bi-arrow-left me-2"></i> TIẾP TỤC MUA SẮM
+                        </a>
+                        <form asp-action="ClearCart" method="post">
+                            <button type="submit" class="btn btn-link text-danger text-decoration-none small fw-bold" 
+                                    onclick="return confirm('Làm trống giỏ hàng?')">
+                                <i class="bi bi-trash3 me-1"></i> XÓA TOÀN BỘ
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="summary-card shadow-luxury rounded-4 bg-white p-4 sticky-top" style="top: 100px;">
+                        <h5 class="fw-800 tracking-tighter mb-4 border-bottom pb-3">TÓM TẮT ĐƠN HÀNG</h5>
+                        
+                        <div class="d-flex justify-content-between mb-3">
+                            <span class="text-muted">Tạm tính</span>
+                            <span class="fw-bold">@total.ToString("#,##0") đ</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span class="text-muted">Phí vận chuyển</span>
+                            <span class="text-success fw-bold">Miễn phí</span>
+                        </div>
+                        
+                        <hr class="my-4">
+                        
+                        <div class="d-flex justify-content-between align-items-center mb-5">
+                            <span class="h6 fw-bold mb-0">TỔNG CỘNG</span>
+                            <span class="h4 fw-800 text-gold mb-0">@total.ToString("#,##0") đ</span>
+                        </div>
+
+                        <a href="@Url.Action("Checkout")" class="btn-luxury-dark w-100 py-3 rounded-3 text-center text-decoration-none fw-bold tracking-widest d-block">
+                            TIẾN HÀNH THANH TOÁN
+                        </a>
+                        
+                        <div class="mt-4 text-center">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" height="20" class="me-3 opacity-50">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" height="15" class="me-3 opacity-50">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" height="20" class="opacity-50">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .fw-800 { font-weight: 800; }
+    .text-gold { color: #d4af37; }
+    .tracking-widest { letter-spacing: 0.1em; }
+    .tracking-tighter { letter-spacing: -1px; }
+    .shadow-luxury { box-shadow: 0 15px 45px rgba(0,0,0,0.05); }
+
+    /* Cart Item Card */
+    .cart-item-card { transition: 0.3s; border: 1px solid transparent; }
+    .cart-item-card:hover { border-color: #d4af37; transform: translateY(-3px); }
+    
+    .cart-img-wrapper { aspect-ratio: 1/1; background: #f9f9f9; display: flex; align-items: center; }
+    .cart-img-wrapper img { mix-blend-mode: multiply; }
+
+    /* Qty Selector */
+    .qty-selector-sm {
+        display: inline-flex; background: #f1f1f1; border-radius: 8px; padding: 2px;
+    }
+    .btn-qty {
+        border: none; background: transparent; width: 30px; height: 30px;
+        display: flex; align-items: center; justify-content: center; font-weight: bold;
+    }
+    .input-qty {
+        border: none; background: transparent; width: 40px; text-align: center;
+        font-weight: bold; font-size: 0.9rem;
+    }
+    
+    .btn-remove {
+        background: transparent; border: none; color: #ccc; transition: 0.3s;
+        font-size: 1.2rem;
+    }
+    .btn-remove:hover { color: #dc3545; transform: rotate(90deg); }
+
+    /* Buttons */
+    .btn-luxury-dark {
+        background: #1a1a1a; color: #fff; border: none;
+        transition: 0.3s; display: inline-block;
+    }
+    .btn-luxury-dark:hover { background: #d4af37; color: #fff; }
+
+    .summary-card { border: 1px solid rgba(212, 175, 55, 0.1); }
+</style>
+
+@section Scripts {
+    <script>
+        function updateQty(btn, val) {
+            var input = $(btn).siblings('.input-qty');
+            var current = parseInt(input.val());
+            if (current + val >= 1) {
+                input.val(current + val);
+                // Tự động submit form khi đổi số lượng
+                $(btn).closest('form').submit();
+            }
+        }
+    </script>
+}

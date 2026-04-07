@@ -1,0 +1,159 @@
+﻿<footer class="footer-luxury bg-dark text-white mt-5 pt-5 pb-3">
+    <div class="container">
+        <div class="row gy-5">
+            <div class="col-lg-5">
+                <div class="footer-brand mb-4">
+                    <h4 class="text-uppercase fw-800 text-white mb-3">
+                        HIHIHAHA<span class="text-gold">Shop</span>
+                    </h4>
+                    <div class="brand-divider mb-4"></div>
+                    <p class="text-muted pe-lg-5 lh-lg">
+                        Định nghĩa lại trải nghiệm mua sắm công nghệ. Chúng tôi không chỉ bán sản phẩm, 
+                        chúng tôi mang đến sự tinh tế và giải pháp tối ưu cho cuộc sống số của bạn.
+                    </p>
+                </div>
+                <div class="social-wrapper d-flex gap-3">
+                    <a href="#" class="social-link" title="Facebook"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="social-link" title="Instagram"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="social-link" title="YouTube"><i class="bi bi-youtube"></i></a>
+                    <a href="#" class="social-link" title="TikTok"><i class="bi bi-tiktok"></i></a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <h6 class="text-uppercase fw-bold mb-4 tracking-widest text-white">Khám phá</h6>
+                <ul class="list-unstyled footer-nav">
+                    <li><a href="~/" class="nav-footer-link">Trang chủ</a></li>
+                    <li><a href="~/Product" class="nav-footer-link">Bộ sưu tập</a></li>
+                    <li><a href="~/About" class="nav-footer-link">Câu chuyện thương hiệu</a></li>
+                    <li><a href="~/Contact" class="nav-footer-link">Hệ thống cửa hàng</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <h6 class="text-uppercase fw-bold mb-4 tracking-widest text-white">Liên hệ</h6>
+                <div class="contact-item d-flex align-items-start mb-3">
+                    <div class="contact-icon-box me-3">
+                        <i class="bi bi-geo-alt"></i>
+                    </div>
+                    <span class="text-muted small">77 Nguyễn Huệ, Thành phố Huế, Việt Nam</span>
+                </div>
+                <div class="contact-item d-flex align-items-start mb-3">
+                    <div class="contact-icon-box me-3">
+                        <i class="bi bi-telephone"></i>
+                    </div>
+                    <span class="text-muted small">0234.3.882.111</span>
+                </div>
+                <div class="contact-item d-flex align-items-start">
+                    <div class="contact-icon-box me-3">
+                        <i class="bi bi-envelope-at"></i>
+                    </div>
+                    <span class="text-muted small">concierge@hihihahashop.com</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom mt-5 pt-4 border-top border-secondary-subtle border-opacity-10">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    <p class="mb-0 text-muted small letter-spacing-1">
+                        &copy; @DateTime.Now.Year <span class="text-white fw-bold">HIHIHAHA Shop</span>. Nền tảng thương mại điện tử cao cấp.
+                    </p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <div class="payment-methods">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="Paypal">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" alt="Visa">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<style>
+    :root {
+        --gold-primary: #d4af37;
+        --text-muted: #8e8e8e;
+    }
+
+    .footer-luxury {
+        background-color: #0a0a0a !important; /* Đen sâu hơn để tạo vẻ luxury */
+        font-family: 'Inter', sans-serif;
+    }
+
+    .fw-800 { font-weight: 800; }
+    .text-gold { color: var(--gold-primary); }
+    .tracking-widest { letter-spacing: 0.2rem; }
+    .letter-spacing-1 { letter-spacing: 1px; }
+
+    /* Divider */
+    .brand-divider {
+        width: 50px;
+        height: 2px;
+        background: var(--gold-primary);
+    }
+
+    /* Social Icons */
+    .social-link {
+        width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        border: 1px solid rgba(255,255,255,0.1);
+        color: white;
+        text-decoration: none;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .social-link:hover {
+        background: var(--gold-primary);
+        border-color: var(--gold-primary);
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2);
+    }
+
+    /* Nav Links */
+    .nav-footer-link {
+        color: var(--text-muted);
+        text-decoration: none;
+        display: block;
+        padding: 6px 0;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+    }
+    .nav-footer-link:hover {
+        color: var(--gold-primary) !important;
+        transform: translateX(8px);
+    }
+
+    /* Contact Icon */
+    .contact-icon-box {
+        color: var(--gold-primary);
+        font-size: 1.1rem;
+    }
+
+    /* Payment Methods */
+    .payment-methods img {
+        height: 22px;
+        margin-left: 20px;
+        filter: grayscale(100%) brightness(1.5);
+        opacity: 0.4;
+        transition: 0.3s;
+    }
+    .payment-methods img:hover {
+        filter: grayscale(0%);
+        opacity: 1;
+    }
+
+    /* Responsive */
+    @@media (max-width: 991.98px) {
+        .footer-luxury { text-align: center; }
+        .social-wrapper { justify-content: center; }
+        .brand-divider { margin: 0 auto 1.5rem; }
+        .nav-footer-link:hover { transform: none; }
+        .contact-item { justify-content: center; }
+    }
+</style>

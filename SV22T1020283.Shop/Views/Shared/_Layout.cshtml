@@ -1,0 +1,169 @@
+﻿<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - HIHIHAHA Shop</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/shop.css" />
+
+    <style>
+        :root {
+            --luxury-gold: #d4af37;
+            --deep-dark: #0a0a0a;
+            --soft-white: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #2d3436;
+            background-color: var(--soft-white);
+            overflow-x: hidden;
+        }
+
+        /* Nút Scroll to Top Luxury */
+        #scrollToTop {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: var(--deep-dark);
+            color: var(--luxury-gold);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+        }
+
+        #scrollToTop.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        #scrollToTop:hover {
+            background: var(--luxury-gold);
+            color: white;
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Loading bar chuẩn Luxury */
+        #nprogress .bar {
+            background: var(--luxury-gold) !important;
+            height: 3px !important;
+        }
+
+        /* Tinh chỉnh Container chính */
+        main {
+            min-height: 80vh;
+            animation: fadeInPage 0.8s ease-in-out;
+        }
+
+        @@keyframes fadeInPage {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Custom Scrollbar cho trình duyệt hiện đại */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { 
+            background: #ccc; 
+            border-radius: 10px;
+            border: 2px solid #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb:hover { background: var(--luxury-gold); }
+
+        /* Modal cao cấp */
+        .modal-content {
+            border: none;
+            border-radius: 24px;
+            box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+    
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+    
+    @await Html.PartialAsync("_Header")
+
+    <main role="main">
+        @RenderBody()
+    </main>
+
+    @await Html.PartialAsync("_Footer")
+
+    <button id="scrollToTop" title="Cuộn lên đầu trang">
+        <i class="bi bi-arrow-up-short fs-3"></i>
+    </button>
+
+    <div class="modal fade" id="dialogModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content" id="modalContent">
+                </div>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/shop.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Hiệu ứng hiện nút Scroll to Top
+            const backToTop = $('#scrollToTop');
+            $(window).scroll(function() {
+                if ($(window).scrollTop() > 500) {
+                    backToTop.addClass('show');
+                } else {
+                    backToTop.removeClass('show');
+                }
+            });
+
+            backToTop.on('click', function(e) {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // Cập nhật giỏ hàng AJAX
+            window.updateCartCount = function() {
+                $.get('/Cart/GetCartCount', function(data) {
+                    const badge = $('#cartCount');
+                    if(data.count > 0) {
+                        badge.text(data.count).fadeIn();
+                        badge.animate({ bottom: '+=5px' }, 200).animate({ bottom: '-=5px' }, 200);
+                    }
+                });
+            }
+            updateCartCount();
+
+            // Hiệu ứng mượt cho Dropdown
+            $('.dropdown').on('show.bs.dropdown', function() {
+                $(this).find('.dropdown-menu').first().stop(true, true).css('opacity', 0).slideDown(300).animate({ opacity: 1 }, { queue: false, duration: 300 });
+            });
+        });
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

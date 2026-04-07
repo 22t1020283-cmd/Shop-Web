@@ -1,0 +1,89 @@
+﻿@{
+    ViewData["Title"] = "Đặt hàng thành công";
+    int orderId = ViewBag.OrderId;
+}
+
+<div class="success-page-wrapper py-5 my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7 col-md-10 text-center">
+            <div class="card border-0 shadow-luxury rounded-5 overflow-hidden bg-white">
+                <div class="card-body py-4 py-md-5 px-4 px-md-5">
+                    <div class="success-icon-box mb-4">
+                        <div class="success-checkmark">
+                            <div class="check-icon">
+                                <span class="icon-line line-tip"></span>
+                                <span class="icon-line line-long"></span>
+                                <div class="icon-circle"></div>
+                                <div class="icon-fix"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h1 class="fw-800 tracking-tighter mb-2 display-5 uppercase">Tuyệt vời!</h1>
+                    <p class="lead text-gold fw-bold mb-4">ĐƠN HÀNG CỦA BẠN ĐÃ ĐƯỢC TIẾP NHẬN</p>
+                    
+                    <div class="order-info-badge py-3 px-4 rounded-4 bg-light mb-4 d-inline-block">
+                        <span class="text-muted small text-uppercase tracking-widest d-block mb-1">Mã định danh đơn hàng</span>
+                        <strong class="fs-3 tracking-widest text-dark">#@orderId</strong>
+                    </div>
+
+                    <p class="text-secondary lh-lg px-lg-5 mb-5">
+                        Cảm ơn bạn đã tin tưởng lựa chọn <strong>HIHIHAHA Shop</strong>. 
+                        Đội ngũ quản gia của chúng tôi đang tiến hành chuẩn bị kiện hàng của bạn với sự tỉ mỉ cao nhất. 
+                        Thông tin xác nhận sẽ được gửi đến bạn trong giây lát.
+                    </p>
+
+                    <div class="action-buttons d-flex flex-column flex-md-row justify-content-center gap-3">
+                        <a href="@Url.Action("Detail", "Order", new { id = orderId })" 
+                           class="btn-luxury-outline px-4 py-3 rounded-3 text-decoration-none fw-bold small tracking-widest">
+                            <i class="bi bi-receipt me-2"></i> CHI TIẾT ĐƠN HÀNG
+                        </a>
+                        <a href="@Url.Action("Index", "Product")" 
+                           class="btn-luxury-dark px-4 py-3 rounded-3 text-decoration-none fw-bold small tracking-widest">
+                            TIẾP TỤC KHÁM PHÁ <i class="bi bi-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="card-footer bg-faint py-3 border-0">
+                    <span class="text-muted small"><i class="bi bi-shield-lock me-1"></i> Mọi giao dịch của bạn đều được bảo mật tuyệt đối</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .fw-800 { font-weight: 800; }
+    .text-gold { color: #d4af37; }
+    .tracking-widest { letter-spacing: 0.15em; }
+    .tracking-tighter { letter-spacing: -1.5px; }
+    .shadow-luxury { box-shadow: 0 30px 70px rgba(0,0,0,0.07); }
+    .bg-faint { background: #fdfdfd; }
+
+    /* Buttons */
+    .btn-luxury-dark {
+        background: #1a1a1a; color: #fff; border: none; transition: 0.3s;
+    }
+    .btn-luxury-dark:hover { background: #d4af37; transform: translateY(-3px); color: #fff; }
+
+    .btn-luxury-outline {
+        background: transparent; color: #1a1a1a; border: 1px solid #1a1a1a; transition: 0.3s;
+    }
+    .btn-luxury-outline:hover { background: #f8f8f8; border-color: #d4af37; color: #d4af37; transform: translateY(-3px); }
+
+    /* Success Checkmark Animation */
+    .success-icon-box { display: flex; justify-content: center; }
+    .success-checkmark { width: 80px; height: 80px; position: relative; }
+    .check-icon { width: 80px; height: 80px; position: relative; border-radius: 50%; box-sizing: content-box; border: 4px solid #d4af37; }
+    .icon-line { height: 5px; background-color: #d4af37; display: block; border-radius: 2px; position: absolute; z-index: 10; }
+    .line-tip { width: 25px; left: 14px; top: 46px; transform: rotate(45deg); }
+    .line-long { width: 47px; right: 8px; top: 38px; transform: rotate(-45deg); }
+
+    /* Hiệu ứng mượt mà khi hiện trang */
+    .success-page-wrapper { animation: fadeInUp 1s ease-out; }
+    @@keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(40px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>

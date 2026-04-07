@@ -1,0 +1,233 @@
+﻿@using SV22T1020283.Models.Catalog
+@{
+    ViewData["Title"] = "Home - HIHIHAHA Shop";
+    var featuredProducts = ViewBag.FeaturedProducts as List<Product> ?? new List<Product>();
+    var categories = ViewBag.Categories as List<Category> ?? new List<Category>();
+}
+
+<div class="luxury-hero position-relative overflow-hidden mb-5">
+    <div class="container-fluid p-0">
+        <div class="row g-0">
+            <div class="col-lg-12">
+                <div class="hero-inner d-flex align-items-center justify-content-center text-center">
+                    <div class="hero-text-box z-3 px-4">
+                        <span class="text-uppercase tracking-widest text-gold mb-3 d-block animate-fade-in">Established 2026</span>
+                        <h1 class="display-1 fw-bold text-white mb-4 luxury-title">HIHIHAHA <span class="text-outline">COLLECTION</span></h1>
+                        <p class="fs-5 text-white-50 mb-5 mx-auto letter-spacing-1" style="max-width: 700px;">
+                            Nâng tầm phong cách sống với những sản phẩm công nghệ tinh tuyển, mang đậm dấu ấn cá nhân và sự sang trọng tuyệt đối.
+                        </p>
+                        <div class="d-flex gap-4 justify-content-center flex-wrap">
+                            <a asp-controller="Product" asp-action="Index" class="btn-luxury-gold px-5 py-3 text-uppercase fw-bold">
+                                Khám phá ngay
+                            </a>
+                            <a href="#categories" class="btn-luxury-outline px-5 py-3 text-uppercase fw-bold">
+                                Danh mục
+                            </a>
+                        </div>
+                    </div>
+                    <div class="hero-video-overlay"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <section id="categories" class="mb-5 pt-4">
+        <div class="section-header text-center mb-5">
+            <h6 class="text-gold text-uppercase tracking-widest mb-2">Curated Selection</h6>
+            <h2 class="fw-bold display-6">DANH MỤC TINH TUYỂN</h2>
+        </div>
+        
+        <div class="row g-4">
+            @foreach (var cat in categories.Take(6))
+            {
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <a href="@Url.Action("Index", "Product", new { categoryId = cat.CategoryID })" class="luxury-cat-card">
+                        <div class="cat-image-box shadow-sm position-relative overflow-hidden rounded-0">
+                            <div class="cat-overlay d-flex align-items-center justify-content-center">
+                                <div class="text-center text-white">
+                                    <h4 class="text-uppercase mb-2">@cat.CategoryName</h4>
+                                    <span class="small text-gold tracking-widest">XEM CHI TIẾT</span>
+                                </div>
+                            </div>
+                            <div class="cat-placeholder bg-dark d-flex align-items-center justify-content-center" style="height: 250px;">
+                                <i class="bi bi-box-seam text-gold fs-1 opacity-25"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </section>
+
+    <section class="mb-5 py-5 border-top border-light">
+        <div class="d-flex justify-content-between align-items-end mb-5">
+            <div>
+                <h6 class="text-gold text-uppercase tracking-widest mb-1">Exclusive Offers</h6>
+                <h2 class="fw-bold mb-0">SẢN PHẨM NỔI BẬT</h2>
+            </div>
+            <a asp-controller="Product" asp-action="Index" class="text-dark text-decoration-none border-bottom border-gold pb-1 fw-bold">
+                TẤT CẢ SẢN PHẨM <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="row g-5">
+            @foreach (var product in featuredProducts)
+            {
+                <div class="col-xl-3 col-lg-4 col-md-6">
+                    <div class="luxury-product-card border-0 bg-transparent h-100">
+                        <div class="product-thumb position-relative overflow-hidden">
+                            <img src="~/images/products/@(string.IsNullOrEmpty(product.Photo) ? "nophoto.png" : product.Photo)"
+                                 class="img-fluid w-100 product-main-img" alt="@product.ProductName">
+                            
+                            <div class="product-hover-actions d-flex flex-column gap-2">
+                                <button class="btn-action add-to-cart" data-product-id="@product.ProductID" title="Thêm vào giỏ">
+                                    <i class="bi bi-bag-plus"></i>
+                                </button>
+                                <a href="@Url.Action("Detail", "Product", new { id = product.ProductID })" class="btn-action" title="Xem nhanh">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="product-info py-4 text-center">
+                            <h5 class="product-title text-uppercase fw-semibold mb-2">@product.ProductName</h5>
+                            <div class="product-price text-gold fw-bold">
+                                @product.Price.ToString("#,##0") <small>VNĐ</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+
+    <div class="row g-0 mt-5 shadow-lg luxury-services">
+        <div class="col-md-4">
+            <div class="service-item p-5 text-center bg-white border-end h-100">
+                <i class="bi bi-box2-heart text-gold mb-4 d-block fs-1"></i>
+                <h6 class="fw-bold text-uppercase tracking-widest mb-3">Đóng gói cao cấp</h6>
+                <p class="text-muted small px-3">Mỗi sản phẩm đều được đặt trong hộp quà thiết kế riêng biệt.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="service-item p-5 text-center bg-white border-end h-100">
+                <i class="bi bi-shield-check text-gold mb-4 d-block fs-1"></i>
+                <h6 class="fw-bold text-uppercase tracking-widest mb-3">Bảo hành VIP</h6>
+                <p class="text-muted small px-3">Hỗ trợ tận nơi 24/7 đối với tất cả các dòng sản phẩm giới hạn.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="service-item p-5 text-center bg-white h-100">
+                <i class="bi bi-gem text-gold mb-4 d-block fs-1"></i>
+                <h6 class="fw-bold text-uppercase tracking-widest mb-3">Thẻ thành viên</h6>
+                <p class="text-muted small px-3">Tích lũy điểm thượng lưu cho những đặc quyền mua sắm sau này.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Luxury Root Colors */
+    :root {
+        --gold: #d4af37;
+        --deep-black: #1a1a1a;
+        --luxury-gray: #f8f8f8;
+    }
+
+    .text-gold { color: var(--gold) !important; }
+    .tracking-widest { letter-spacing: 0.3em; }
+    .letter-spacing-1 { letter-spacing: 1px; }
+
+    /* Hero Styling */
+    .luxury-hero {
+        height: 85vh;
+        background: url('https://images.unsplash.com/photo-1491933382434-500287f9b54b?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat;
+    }
+    .hero-inner { height: 100%; position: relative; background: rgba(0,0,0,0.6); }
+    .luxury-title { font-size: 5rem; letter-spacing: -2px; }
+    .text-outline { -webkit-text-stroke: 1px white; color: transparent; }
+
+    /* Buttons Luxury */
+    .btn-luxury-gold {
+        background: var(--gold); color: white; border: none; 
+        transition: 0.4s; text-decoration: none;
+    }
+    .btn-luxury-gold:hover { background: #b8962e; transform: translateY(-3px); letter-spacing: 2px; }
+
+    .btn-luxury-outline {
+        border: 1px solid white; color: white; 
+        transition: 0.4s; text-decoration: none;
+    }
+    .btn-luxury-outline:hover { background: white; color: black; transform: translateY(-3px); }
+
+    /* Category Cards */
+    .luxury-cat-card .cat-image-box { transition: 0.5s ease; border: 1px solid #eee; }
+    .cat-overlay {
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.4); opacity: 0; transition: 0.4s; z-index: 2;
+    }
+    .luxury-cat-card:hover .cat-overlay { opacity: 1; }
+    .luxury-cat-card:hover .cat-image-box { transform: scale(1.02); border-color: var(--gold); }
+
+    /* Product Cards Gallery Style */
+    .luxury-product-card { transition: 0.4s; }
+    .product-thumb { background: #fdfdfd; padding: 20px; }
+    .product-main-img { transition: 0.8s cubic-bezier(0.2, 1, 0.3, 1); mix-blend-mode: multiply; height: 300px; object-fit: contain; }
+    .luxury-product-card:hover .product-main-img { transform: scale(1.1); }
+
+    .product-hover-actions {
+        position: absolute; bottom: 20px; right: -60px;
+        transition: 0.4s ease-in-out;
+    }
+    .luxury-product-card:hover .product-hover-actions { right: 20px; }
+
+    .btn-action {
+        width: 45px; height: 45px; border-radius: 50%;
+        background: white; border: none; color: black;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: 0.3s;
+    }
+    .btn-action:hover { background: var(--gold); color: white; }
+
+    .product-title { font-size: 0.9rem; letter-spacing: 1px; color: var(--deep-black); }
+
+    /* Services */
+    .luxury-services .service-item { transition: 0.3s; }
+    .luxury-services .service-item:hover { background: var(--luxury-gray) !important; }
+
+    /* Animations */
+    .animate-fade-in { animation: fadeIn 1.5s ease; }
+    @@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+</style>
+
+@section Scripts {
+    <script>
+        $('.add-to-cart').click(function(e) {
+            e.preventDefault();
+            var productId = $(this).data('product-id');
+            var $btn = $(this);
+
+            $btn.html('<span class="spinner-border spinner-border-sm"></span>');
+
+            $.post('@Url.Action("AddToCart", "Cart")', { productId: productId, quantity: 1 })
+                .done(function(response) {
+                    if (response.success) {
+                        $('#cartCount').text(response.cartCount);
+                        // Thay alert bằng thông báo mượt mà hơn
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Exclusive Access',
+                            text: 'Sản phẩm đã được thêm vào giỏ hàng của bạn.',
+                            showConfirmButton: false,
+                            timer: 2000,
+                            toast: true,
+                            position: 'top-end'
+                        });
+                    }
+                })
+                .always(function() {
+                    $btn.html('<i class="bi bi-bag-plus"></i>');
+                });
+        });
+    </script>
+}
