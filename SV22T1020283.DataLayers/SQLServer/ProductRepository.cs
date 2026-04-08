@@ -20,11 +20,28 @@ namespace SV22T1020283.DataLayers.SQLServer
             return await connection.ExecuteScalarAsync<int>(sql, data);
         }
 
+      
         public async Task<bool> DeleteAsync(int productID)
         {
             using var connection = GetConnection();
-            string sql = "DELETE FROM Products WHERE ProductID=@productID";
-            return await connection.ExecuteAsync(sql, new { productID }) > 0;
+
+            // 1. Không cho xóa nếu đã có đơn hàng
+            string checkSql = "SELECT COUNT(*) FROM OrderDetails WHERE ProductID=@productID";
+            int count = await connection.ExecuteScalarAsync<int>(checkSql, new { productID });
+            if (count > 0)
+                return false;
+
+            // 2. Xóa attribute trước
+            string sqlAttr = "DELETE FROM ProductAttributes WHERE ProductID=@productID";
+            await connection.ExecuteAsync(sqlAttr, new { productID });
+
+            // 3. Xóa photo trước
+            string sqlPhoto = "DELETE FROM ProductPhotos WHERE ProductID=@productID";
+            await connection.ExecuteAsync(sqlPhoto, new { productID });
+
+            // 4. Xóa product
+            string sqlProduct = "DELETE FROM Products WHERE ProductID=@productID";
+            return await connection.ExecuteAsync(sqlProduct, new { productID }) > 0;
         }
 
         public async Task<Product?> GetAsync(int productID)

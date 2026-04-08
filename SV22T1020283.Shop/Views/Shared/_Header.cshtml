@@ -27,7 +27,7 @@
         <div class="collapse navbar-collapse" id="mainNavbar">
             <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-4">
                 <li class="nav-item">
-                    <a href="~/" class="nav-link-luxury @(Context.Request.Path == "/" ? "active" : "")">Khám phá</a>
+                    <a href="~/" class="nav-link-luxury @(Context.Request.Path == "/" ? "active" : "")">Trang chủ</a>
                 </li>
                 <li class="nav-item">
                     <a href="~/Product" class="nav-link-luxury @(Context.Request.Path.StartsWithSegments("/Product") ? "active" : "")">Sản phẩm</a>
@@ -66,7 +66,7 @@
                                     <p class="mb-0 text-muted small text-truncate">@email</p>
                                 </div>
                             </li>
-                            <li><a class="dropdown-item luxury-item" href="~/ShopAccount/Profile"><i class="bi bi-person-circle me-2"></i> Hồ sơ cá nhân</a></li>
+                            <li><a class="dropdown-item luxury-item" href="~/ShopAccount/Profile"><i class="bi bi-person-circle me-2"></i> Thông tin cá nhân</a></li>
                             <li><a class="dropdown-item luxury-item" href="~/Order"><i class="bi bi-receipt-cutoff me-2"></i> Lịch sử đơn hàng</a></li>
                             <li><hr class="dropdown-divider opacity-50"></li>
                             <li><a class="dropdown-item luxury-item text-danger" href="~/ShopAccount/Logout"><i class="bi bi-box-arrow-right me-2"></i> Đăng xuất</a></li>
